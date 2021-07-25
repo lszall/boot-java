@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jx.platform.dao.sys.SysActionLogMapper">
+  <resultMap id="BaseResultMap" type="com.jx.platform.entity.sys.SysActionLog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="application_name" jdbcType="VARCHAR" property="applicationName" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="action_url" jdbcType="VARCHAR" property="actionUrl" />
+    <result column="success" jdbcType="CHAR" property="success" />
+    <result column="cost_time" jdbcType="BIGINT" property="costTime" />
+    <result column="req_ip" jdbcType="VARCHAR" property="reqIp" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.jx.platform.entity.sys.SysActionLog">
+    <result column="param" jdbcType="LONGVARCHAR" property="param" />
+    <result column="response" jdbcType="LONGVARCHAR" property="response" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, application_name, username, action_url, success, cost_time, req_ip, create_date
+  </sql>
+  <sql id="Blob_Column_List">
+    param, response
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from sys_action_log
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_action_log
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.jx.platform.entity.sys.SysActionLog">
+    insert into sys_action_log (id, application_name, username, 
+      action_url, success, cost_time, 
+      req_ip, create_date, param, 
+      response)
+    values (#{id,jdbcType=INTEGER}, #{applicationName,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, 
+      #{actionUrl,jdbcType=VARCHAR}, #{success,jdbcType=CHAR}, #{costTime,jdbcType=BIGINT}, 
+      #{reqIp,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{param,jdbcType=LONGVARCHAR}, 
+      #{response,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jx.platform.entity.sys.SysActionLog">
+    insert into sys_action_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="applicationName != null">
+        application_name,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="actionUrl != null">
+        action_url,
+      </if>
+      <if test="success != null">
+        success,
+      </if>
+      <if test="costTime != null">
+        cost_time,
+      </if>
+      <if test="reqIp != null">
+        req_ip,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="param != null">
+        param,
+      </if>
+      <if test="response != null">
+        response,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="applicationName != null">
+        #{applicationName,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUrl != null">
+        #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="success != null">
+        #{success,jdbcType=CHAR},
+      </if>
+      <if test="costTime != null">
+        #{costTime,jdbcType=BIGINT},
+      </if>
+      <if test="reqIp != null">
+        #{reqIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param != null">
+        #{param,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="response != null">
+        #{response,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jx.platform.entity.sys.SysActionLog">
+    update sys_action_log
+    <set>
+      <if test="applicationName != null">
+        application_name = #{applicationName,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="actionUrl != null">
+        action_url = #{actionUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="success != null">
+        success = #{success,jdbcType=CHAR},
+      </if>
+      <if test="costTime != null">
+        cost_time = #{costTime,jdbcType=BIGINT},
+      </if>
+      <if test="reqIp != null">
+        req_ip = #{reqIp,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="param != null">
+        param = #{param,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="response != null">
+        response = #{response,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.jx.platform.entity.sys.SysActionLog">
+    update sys_action_log
+    set application_name = #{applicationName,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      action_url = #{actionUrl,jdbcType=VARCHAR},
+      success = #{success,jdbcType=CHAR},
+      cost_time = #{costTime,jdbcType=BIGINT},
+      req_ip = #{reqIp,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      param = #{param,jdbcType=LONGVARCHAR},
+      response = #{response,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jx.platform.entity.sys.SysActionLog">
+    update sys_action_log
+    set application_name = #{applicationName,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      action_url = #{actionUrl,jdbcType=VARCHAR},
+      success = #{success,jdbcType=CHAR},
+      cost_time = #{costTime,jdbcType=BIGINT},
+      req_ip = #{reqIp,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
