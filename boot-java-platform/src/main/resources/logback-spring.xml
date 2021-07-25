@@ -18,12 +18,14 @@
     <property name="log.home" value="/spring-boot-log/"/>
     <!-- 日志名字-->
     <property name="log.name" value="spring-boot"/>
-
+    <!-- 彩色日志-->
+    <property name="CONSOLE_LOG_PATTERN"
+              value="%date{yyyy-MM-dd HH:mm:ss} | %highlight(%-5level) | %boldYellow(%thread) | %boldGreen(%logger) | %boldGreen(%msg)%n"/>
     <!-- appender 负责写日志的组件, 主要用来设置日志的输出位置, 日志文件的生成策略 -->
     <!-- ConsoleAppender 把日志打印到控制台-->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%yellow(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%thread] %highlight(%-5level) %logger{15} - %msg%n</pattern>
         </encoder>
     </appender>
     <!-- RollingFileAppender 滚动记录地把日志输出到文件, 也就是可以支持日志文件按文件大小拆分,或者按日期拆分.-->
