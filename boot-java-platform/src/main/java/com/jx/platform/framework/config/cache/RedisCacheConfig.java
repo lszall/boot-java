@@ -11,6 +11,9 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
 
+/**
+ * 默认springCache 没有缓存失效时间 这里配置自定义缓存配置
+ */
 @Configuration
 public class RedisCacheConfig extends CachingConfigurerSupport {
 
