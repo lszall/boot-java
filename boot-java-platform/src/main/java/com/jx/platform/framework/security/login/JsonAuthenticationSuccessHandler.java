@@ -8,7 +8,7 @@ import com.jx.platform.common.response.ResponseUtil;
 import com.jx.platform.entity.admin.AdminLogin;
 import com.jx.platform.framework.security.PlatformUserDetail;
 import com.jx.platform.framework.security.jwt.TokenAuthenticationHelper;
-import com.jx.platform.service.admin.AdminService;
+import com.jx.platform.service.admin.AdminLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class JsonAuthenticationSuccessHandler implements AuthenticationSuccessHa
     private RedisTemplate redisTemplate;
 
     @Autowired
-    private AdminService adminService;
+    private AdminLoginService adminService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

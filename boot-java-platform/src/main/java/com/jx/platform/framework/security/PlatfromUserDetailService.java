@@ -1,11 +1,10 @@
 package com.jx.platform.framework.security;
 
 import com.jx.platform.entity.admin.AdminLogin;
-import com.jx.platform.service.admin.AdminService;
+import com.jx.platform.service.admin.AdminLoginService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,7 +20,7 @@ public class PlatfromUserDetailService implements UserDetailsService {
 
 
     @Autowired
-    private AdminService adminService;
+    private AdminLoginService adminService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

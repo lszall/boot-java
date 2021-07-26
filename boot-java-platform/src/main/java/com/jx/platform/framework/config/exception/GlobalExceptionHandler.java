@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
     public ResponseData bussinessException(BussinessException ex) {
         ex.printStackTrace();
         ResponseData data = new ResponseData(ResponseType.BUSSINESS_ERROR);
-        data.setDebug(ex.getMsg());
+        data.setMsg(ex.getMsg());
         return data;
     }
 

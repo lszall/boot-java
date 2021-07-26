@@ -25,22 +25,27 @@ import java.time.LocalDateTime;
 @Data
 public class AdminRole implements GrantedAuthority,Serializable {
     /**
-     * 
+     *
      */
     private Integer id;
 
     /**
-     * 
+     * 角色编码
      */
     private String roleCode;
 
     /**
-     * 
+     * 角色名称
      */
     private String roleName;
 
     /**
-     * 
+     * 角色类型 S 系统角色 C 自定义角色
+     */
+    private String roleType;
+
+    /**
+     * 描述
      */
     private String roleDesc;
 

@@ -1,5 +1,6 @@
 package com.jx.platform.framework.security;
 
+import com.jx.platform.framework.config.aop.LogFilter;
 import com.jx.platform.framework.security.jwt.JwtAuthenticationFilter;
 import com.jx.platform.framework.security.login.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +76,7 @@ public class SercurityConfig extends WebSecurityConfigurerAdapter {
                 .apply(new JsonLoginConfigurer<>(authFilter)).loginSuccessHandler(jsonAuthenticationSuccessHandler).loginFailureHandler(jsonAuthenticationFailureHandler)
                 .and()
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new LogFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().disable()
                 .cors()
         ;

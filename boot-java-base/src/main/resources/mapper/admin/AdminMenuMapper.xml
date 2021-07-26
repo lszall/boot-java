@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jx.platform.dao.admin.AdminMenuMapper">
+    <resultMap id="BaseResultMap" type="com.jx.platform.entity.admin.AdminMenu">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="menu_code" jdbcType="VARCHAR" property="menuCode"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="menu_level" jdbcType="INTEGER" property="menuLevel"/>
+        <result column="parent_menu" jdbcType="VARCHAR" property="parentMenu"/>
+        <result column="menu_order" jdbcType="INTEGER" property="menuOrder"/>
+        <result column="menu_url" jdbcType="VARCHAR" property="menuUrl"/>
+        <result column="show_flag" jdbcType="CHAR" property="showFlag"/>
+        <result column="menu_desc" jdbcType="VARCHAR" property="menuDesc"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, menu_code, menu_name, menu_level, parent_menu, menu_order, menu_url, show_flag, 
+    menu_desc, create_date
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from admin_menu
+        where menu_code = #{menuCode,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <insert id="insert" parameterType="com.jx.platform.dto.admin.MenuInsertDto">
+    insert into admin_menu ( menu_code, menu_name,
+      menu_level, parent_menu, menu_order, 
+      menu_url, show_flag, menu_desc, 
+      create_date)
+    values ( #{menuCode,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR},
+      #{menuLevel,jdbcType=INTEGER}, #{parentMenu,jdbcType=VARCHAR}, #{menuOrder,jdbcType=INTEGER}, 
+      #{menuUrl,jdbcType=VARCHAR}, #{showFlag,jdbcType=CHAR}, #{menuDesc,jdbcType=VARCHAR}, 
+      now())
+  </insert>
+    <insert id="insertSelective" parameterType="com.jx.platform.dto.admin.MenuInsertDto">
+        insert into admin_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuCode != null">
+                menu_code,
+            </if>
+            <if test="menuName != null">
+                menu_name,
+            </if>
+            <if test="menuLevel != null">
+                menu_level,
+            </if>
+            <if test="parentMenu != null">
+                parent_menu,
+            </if>
+            <if test="menuOrder != null">
+                menu_order,
+            </if>
+            <if test="menuUrl != null">
+                menu_url,
+            </if>
+            <if test="showFlag != null">
+                show_flag,
+            </if>
+            <if test="menuDesc != null">
+                menu_desc,
+            </if>
+                create_date,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuCode != null">
+                #{menuCode,jdbcType=VARCHAR},
+            </if>
+            <if test="menuName != null">
+                #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuLevel != null">
+                #{menuLevel,jdbcType=INTEGER},
+            </if>
+            <if test="parentMenu != null">
+                #{parentMenu,jdbcType=VARCHAR},
+            </if>
+            <if test="menuOrder != null">
+                #{menuOrder,jdbcType=INTEGER},
+            </if>
+            <if test="menuUrl != null">
+                #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="showFlag != null">
+                #{showFlag,jdbcType=CHAR},
+            </if>
+            <if test="menuDesc != null">
+                #{menuDesc,jdbcType=VARCHAR},
+            </if>
+               now()
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jx.platform.dto.admin.MenuInsertDto">
+        update admin_menu
+        <set>
+
+            <if test="menuName != null">
+                menu_name = #{menuName,jdbcType=VARCHAR},
+            </if>
+            <if test="menuLevel != null">
+                menu_level = #{menuLevel,jdbcType=INTEGER},
+            </if>
+            <if test="parentMenu != null">
+                parent_menu = #{parentMenu,jdbcType=VARCHAR},
+            </if>
+            <if test="menuOrder != null">
+                menu_order = #{menuOrder,jdbcType=INTEGER},
+            </if>
+            <if test="menuUrl != null">
+                menu_url = #{menuUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="showFlag != null">
+                show_flag = #{showFlag,jdbcType=CHAR},
+            </if>
+            <if test="menuDesc != null">
+                menu_desc = #{menuDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where menu_code = #{menuCode,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jx.platform.entity.admin.AdminMenu">
+    update admin_menu
+    set menu_code = #{menuCode,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_level = #{menuLevel,jdbcType=INTEGER},
+      parent_menu = #{parentMenu,jdbcType=VARCHAR},
+      menu_order = #{menuOrder,jdbcType=INTEGER},
+      menu_url = #{menuUrl,jdbcType=VARCHAR},
+      show_flag = #{showFlag,jdbcType=CHAR},
+      menu_desc = #{menuDesc,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <select id="selectByRoleCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select m.menu_code, m.menu_name, m.menu_level,m.parent_menu,  m.menu_url, m.show_flag, m.menu_desc
+    from admin_role_menu r
+    left join admin_menu m on r.menu_code=m.menu_code
+    where r.role_code = #{roleCode,jdbcType=VARCHAR}
+  </select>
+    <select id="listAdminMenu" parameterType="com.jx.platform.dto.admin.MenuListDto" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from admin_menu
+        where 1=1
+        <if test="menuCode!=null and menuCode!=''">
+            and menu_code = #{menuCode,jdbcType=VARCHAR}
+        </if>
+        <if test="menuName!=null and menuName!=''">
+            and menu_name like concat('%',#{menuName,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+
+</mapper>

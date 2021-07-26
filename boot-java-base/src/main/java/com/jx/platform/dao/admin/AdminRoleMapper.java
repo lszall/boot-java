@@ -9,7 +9,11 @@
 package com.jx.platform.dao.admin;
 
 
+import com.jx.platform.dto.admin.RoleInsertDto;
+import com.jx.platform.dto.admin.RoleListDto;
 import com.jx.platform.entity.admin.AdminRole;
+
+import java.util.List;
 
 public interface AdminRoleMapper {
     /**
@@ -30,7 +34,7 @@ public interface AdminRoleMapper {
 	* @author lsz
 	* @date 2021-07-11 10:16:28
 	*/
-    int insert(AdminRole record);
+    int insert(RoleInsertDto record);
 
     /**
 	* 
@@ -45,12 +49,12 @@ public interface AdminRoleMapper {
     /**
 	* 
 	* 
-	* @param id:   
+	* @param roleCode:
 	* @return com.boot.application.entity.AdminRole
 	* @author lsz
 	* @date 2021-07-11 10:16:28
 	*/
-    AdminRole selectByPrimaryKey(Integer id);
+    AdminRole selectByPrimaryKey(String roleCode);
 
     /**
 	* 
@@ -60,7 +64,7 @@ public interface AdminRoleMapper {
 	* @author lsz
 	* @date 2021-07-11 10:16:28
 	*/
-    int updateByPrimaryKeySelective(AdminRole record);
+    int updateByPrimaryKeySelective(RoleInsertDto record);
 
     /**
 	* 
@@ -71,4 +75,27 @@ public interface AdminRoleMapper {
 	* @date 2021-07-11 10:16:28
 	*/
     int updateByPrimaryKey(AdminRole record);
+
+
+	List<AdminRole> listAdminRole(RoleListDto dto);
+	/**
+	 *
+	 *删除菜单角色
+	 * @param record:
+	 * @return int
+	 * @author lsz
+	 * @date 2021-07-11 10:16:28
+	 */
+	int deleteRoleMenus(RoleInsertDto record);
+	/**
+	 *
+	 *新增菜单角色
+	 * @param record:
+	 * @return int
+	 * @author lsz
+	 * @date 2021-07-11 10:16:28
+	 */
+	int insertRoleMenus(RoleInsertDto record);
+
+
 }
