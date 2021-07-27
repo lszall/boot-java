@@ -1,33 +1,12 @@
-/**
-*
-* @ClassName: AdminMenu
-* @Description: 
-* @Author: lsz
-* @Date: 2021-07-26 15:04:39
-* @version: v1.0
-*/
 package com.jx.platform.entity.admin;
 
 import lombok.Data;
 
-import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.List;
 
-/**
- * 
- *
- * @author lsz
- * @date 2021-07-26 15:04:39
- */
-@Table(name = "admin_menu")
 @Data
-public class AdminMenu implements Serializable ,Comparable<AdminMenu>{
-    /**
-     *
-     */
-    private Integer id;
-
+public class AdminMenuTree implements Serializable,Comparable<AdminMenuTree> {
     /**
      * 菜单编码
      */
@@ -68,15 +47,10 @@ public class AdminMenu implements Serializable ,Comparable<AdminMenu>{
      */
     private String menuDesc;
 
-    /**
-     * 
-     */
-    private LocalDateTime createDate;
-
-    private static final long serialVersionUID = 1L;
+    List<AdminMenuTree> children;
 
     @Override
-    public int compareTo(AdminMenu o) {
+    public int compareTo(AdminMenuTree o) {
         return this.getMenuOrder()-o.getMenuOrder();
     }
 }

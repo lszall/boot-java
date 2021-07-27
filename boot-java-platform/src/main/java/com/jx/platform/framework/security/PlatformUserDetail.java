@@ -18,6 +18,7 @@ public class PlatformUserDetail implements UserDetails {
 
     private String salt;
 
+    private String roleCdoe;
     private LocalDateTime lastLoginTime;
 
     private boolean locked;

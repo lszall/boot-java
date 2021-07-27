@@ -5,6 +5,7 @@ import com.jx.platform.common.response.ResponseData;
 import com.jx.platform.common.response.ResponseType;
 import io.lettuce.core.RedisConnectionException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -40,6 +41,13 @@ public class GlobalExceptionHandler {
         ResponseData data = new ResponseData(ResponseType.METHOD_ERROR);
         return data;
     }
+    @ExceptionHandler(value = { MethodArgumentNotValidException.class })
+    public ResponseData methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        ResponseData data = new ResponseData(ResponseType.PARAM_ERROR);
+        data.setMsg(ex.getMessage());
+        return data;
+    }
+
 
     @ExceptionHandler(value = { Exception.class })
     public ResponseData exception(Exception ex) {

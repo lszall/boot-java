@@ -37,4 +37,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/**/*.xml
+hibernate:
+  validator:
+    fail_fast: false # true-快速失败返回模式    false-普通模式
 
