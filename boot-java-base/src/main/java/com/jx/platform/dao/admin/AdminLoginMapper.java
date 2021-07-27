@@ -26,7 +26,7 @@ public interface AdminLoginMapper {
      * @author lsz
      * @date 2021-07-11 10:16:28
      */
-    @Cacheable(cacheNames = "spring-cache:login", key = "#account")
+    @Cacheable(cacheNames = "spring-cache:login", key = "#account",unless = "#result == null")
     AdminLogin selectByAccount(String account);
 
 

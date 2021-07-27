@@ -27,7 +27,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = { BussinessException.class })
     public ResponseData bussinessException(BussinessException ex) {
-        ex.printStackTrace();
         ResponseData data = new ResponseData(ResponseType.BUSSINESS_ERROR);
         data.setMsg(ex.getMsg());
         return data;
@@ -41,7 +40,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = { NoHandlerFoundException.class })
     public ResponseData noHandlerFoundException(NoHandlerFoundException ex) {
-        ex.printStackTrace();
         ResponseData data = new ResponseData(ResponseType.NOT_FOUND);
         return data;
     }
