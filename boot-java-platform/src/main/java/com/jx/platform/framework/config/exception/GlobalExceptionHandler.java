@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+/**
+ * 全局异常处理器（controller 层面捕获） （无法捕获SpringSecurity过滤链产生的异常）
+ */
 @RestControllerAdvice
 @ResponseBody
 public class GlobalExceptionHandler {
