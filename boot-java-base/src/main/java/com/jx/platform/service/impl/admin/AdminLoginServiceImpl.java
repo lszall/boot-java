@@ -45,22 +45,12 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     }
 
     @Override
-
-    public int lockAccount(AccountLockDto dto) {
-        AdminLogin adminLogin = new AdminLogin();
-        adminLogin.setAccount(dto.getAccount());
-        adminLogin.setStatus(dto.getLock());
+    public int updateByPrimaryKeySelective(AdminLogin adminLogin) {
         return adminLoginMapper.updateByPrimaryKeySelective(adminLogin);
     }
 
-    @Override
-    public int resetPwd(AccountRestPwdDto dto) {
-        AdminLogin adminLogin = new AdminLogin();
-        adminLogin.setAccount(dto.getAccount());
-        adminLogin.setPassword(dto.getPassword());
-        adminLogin.setUpdateTime(LocalDateTime.now());
-        return adminLoginMapper.updateByPrimaryKeySelective(adminLogin);
-    }
+
+
 
 
     @Override

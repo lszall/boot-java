@@ -12,6 +12,6 @@ public class PlatformPasswordEncoder implements PasswordEncoder {
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
 
 
-        return rawPassword.toString().equals(encodedPassword);
+        return rawPassword.toString().equals(encode(encodedPassword));
     }
 }

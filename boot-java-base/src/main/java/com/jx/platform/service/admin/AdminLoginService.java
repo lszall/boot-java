@@ -41,20 +41,13 @@ public interface AdminLoginService {
      */
     PageInfo<AdminLogin> pageAdminAccount(AccountListDto dto);
 
-    /**
-     * 锁定 解锁用户
-     * @param dto
-     * @return
-     */
-    int lockAccount(AccountLockDto dto);
 
     /**
-     * 重置密码
-     * @param dto
+     * 用户信息
+     * @param adminLogin
      * @return
      */
-    int resetPwd(AccountRestPwdDto dto);
-
+    int updateByPrimaryKeySelective(AdminLogin adminLogin);
     /**
      * 分页角色
      *
