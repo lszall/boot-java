@@ -40,6 +40,7 @@ public class ResponseData implements Serializable {
      */
     private Object data;
 
+
     public ResponseData(ResponseType type) {
         this.code = type.code();
         this.msg = type.msg();

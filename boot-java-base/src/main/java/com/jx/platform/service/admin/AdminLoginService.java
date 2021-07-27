@@ -1,10 +1,7 @@
 package com.jx.platform.service.admin;
 
 import com.github.pagehelper.PageInfo;
-import com.jx.platform.dto.admin.MenuInsertDto;
-import com.jx.platform.dto.admin.MenuListDto;
-import com.jx.platform.dto.admin.RoleInsertDto;
-import com.jx.platform.dto.admin.RoleListDto;
+import com.jx.platform.dto.admin.*;
 import com.jx.platform.entity.admin.AdminLogin;
 import com.jx.platform.entity.admin.AdminMenu;
 import com.jx.platform.entity.admin.AdminRole;
@@ -33,6 +30,30 @@ public interface AdminLoginService {
      * @date 2021-07-11 10:16:28
      */
     int updateAdminLastLoginTime(AdminLogin adminLogin);
+
+    /**
+     *
+     * 查询admin信息
+     * @param dto:
+     * @return com.boot.application.entity.AdminLogin
+     * @author lsz
+     * @date 2021-07-11 10:16:28
+     */
+    PageInfo<AdminLogin> pageAdminAccount(AccountListDto dto);
+
+    /**
+     * 锁定 解锁用户
+     * @param dto
+     * @return
+     */
+    int lockAccount(AccountLockDto dto);
+
+    /**
+     * 重置密码
+     * @param dto
+     * @return
+     */
+    int resetPwd(AccountRestPwdDto dto);
 
     /**
      * 分页角色

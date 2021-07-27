@@ -6,19 +6,16 @@ import com.jx.platform.common.exception.BussinessException;
 import com.jx.platform.dao.admin.AdminLoginMapper;
 import com.jx.platform.dao.admin.AdminMenuMapper;
 import com.jx.platform.dao.admin.AdminRoleMapper;
-import com.jx.platform.dto.admin.MenuInsertDto;
-import com.jx.platform.dto.admin.MenuListDto;
-import com.jx.platform.dto.admin.RoleInsertDto;
-import com.jx.platform.dto.admin.RoleListDto;
+import com.jx.platform.dto.admin.*;
 import com.jx.platform.entity.admin.AdminLogin;
 import com.jx.platform.entity.admin.AdminMenu;
 import com.jx.platform.entity.admin.AdminRole;
 import com.jx.platform.service.admin.AdminLoginService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +35,30 @@ public class AdminLoginServiceImpl implements AdminLoginService {
 
     @Override
     public int updateAdminLastLoginTime(AdminLogin adminLogin) {
+        return adminLoginMapper.updateByPrimaryKeySelective(adminLogin);
+    }
+
+    @Override
+    public PageInfo<AdminLogin> pageAdminAccount(AccountListDto dto) {
+        PageHelper.startPage(dto.getPageNum(), dto.getPageSize());
+        return new PageInfo<>(adminLoginMapper.listAdminLogin(dto));
+    }
+
+    @Override
+
+    public int lockAccount(AccountLockDto dto) {
+        AdminLogin adminLogin = new AdminLogin();
+        adminLogin.setAccount(dto.getAccount());
+        adminLogin.setStatus(dto.getLock());
+        return adminLoginMapper.updateByPrimaryKeySelective(adminLogin);
+    }
+
+    @Override
+    public int resetPwd(AccountRestPwdDto dto) {
+        AdminLogin adminLogin = new AdminLogin();
+        adminLogin.setAccount(dto.getAccount());
+        adminLogin.setPassword(dto.getPassword());
+        adminLogin.setUpdateTime(LocalDateTime.now());
         return adminLoginMapper.updateByPrimaryKeySelective(adminLogin);
     }
 

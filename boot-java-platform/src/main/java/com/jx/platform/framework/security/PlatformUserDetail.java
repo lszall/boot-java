@@ -1,13 +1,11 @@
 package com.jx.platform.framework.security;
 
-import com.jx.platform.entity.admin.AdminRole;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 
 @Data
 public class PlatformUserDetail implements UserDetails {
@@ -18,7 +16,7 @@ public class PlatformUserDetail implements UserDetails {
 
     private String salt;
 
-    private String roleCdoe;
+    private String roleCode;
     private LocalDateTime lastLoginTime;
 
     private boolean locked;

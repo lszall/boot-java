@@ -61,8 +61,6 @@ public class LogAop {
         ServletRequestAttributes sra = (ServletRequestAttributes) ra;
         HttpServletRequest request = sra.getRequest();
         String url = request.getRequestURI();
-        Map<String, String[]> parameterMap = request.getParameterMap();
-        System.out.println(parameterMap);
         String param = new String(new BodyReaderHttpServletRequestWrapper(request).getBody());
         String ip = RequestUtil.getIpAddress(request);
         Long start = System.currentTimeMillis();

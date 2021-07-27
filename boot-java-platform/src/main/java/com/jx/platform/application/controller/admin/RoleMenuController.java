@@ -76,7 +76,7 @@ public class RoleMenuController extends BaseController {
      */
     @PostMapping("menuTree")
     public ResponseData menuTree() {
-        String roleCode = userDetail().getRoleCdoe();
+        String roleCode = userDetail().getRoleCode();
         if ("super".equals(roleCode)) {
             roleCode = null;
         }

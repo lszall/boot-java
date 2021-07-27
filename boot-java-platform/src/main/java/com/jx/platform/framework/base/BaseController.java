@@ -39,5 +39,14 @@ public class BaseController {
     public ResponseData success(Object data){
         return new ResponseData(data);
     }
-
+    /**
+     * 失败返回
+     * @param msg
+     * @return
+     */
+    public ResponseData failure(String msg){
+        ResponseData data= new ResponseData(ResponseType.BUSSINESS_ERROR);
+        data.setMsg(msg);
+        return data;
+    }
 }

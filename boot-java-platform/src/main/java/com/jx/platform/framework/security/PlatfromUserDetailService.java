@@ -33,7 +33,7 @@ public class PlatfromUserDetailService implements UserDetailsService {
         userDetail.setSalt("jxxx");
         userDetail.setUsername(adminLogin.getAccount());
         userDetail.setPassword(adminLogin.getPassword());
-        userDetail.setRoleCdoe(adminLogin.getRoleCode());
+        userDetail.setRoleCode(adminLogin.getRoleCode());
         userDetail.setLastLoginTime(adminLogin.getLastLoginTime());
         userDetail.setLocked("Y".equalsIgnoreCase(adminLogin.getStatus()) ? false : true);
         userDetail.setAuthorities(Arrays.asList("ROLE_"+adminLogin.getRoleCode()).stream().map(SimpleGrantedAuthority::new)
