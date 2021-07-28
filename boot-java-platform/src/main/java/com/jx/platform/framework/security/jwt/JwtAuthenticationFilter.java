@@ -38,14 +38,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             JwtToken token = TokenAuthenticationHelper.getJwtToken(httpServletRequest);
             if (token != null) {
-                PlatformUserDetail platformUserDetail = (PlatformUserDetail) platfromUserDetailService.loadUserByUsername(token.getSubject());
                 Object obj = redisTemplate.opsForValue().get(TOKEN_CREATE_TIME + token.getSubject());
-                if (obj != null && obj instanceof LocalDateTime) {
-                    LocalDateTime now = (LocalDateTime) obj;
-                    platformUserDetail.setLastLoginTime(now);
-                    if (TokenAuthenticationHelper.checkSign(token.getSign(), platformUserDetail)) {
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(platformUserDetail, null, platformUserDetail.getAuthorities());
-                        usernamePasswordAuthenticationToken.setDetails(platformUserDetail);
+                if (obj != null && obj instanceof PlatformUserDetail) {
+                    PlatformUserDetail detail = (PlatformUserDetail) obj;
+                    if (TokenAuthenticationHelper.checkSign(token.getSign(), detail)) {
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(detail, null, detail.getAuthorities());
+                        usernamePasswordAuthenticationToken.setDetails(detail);
                         // 对用 token 获取到的用户进行校验
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     }

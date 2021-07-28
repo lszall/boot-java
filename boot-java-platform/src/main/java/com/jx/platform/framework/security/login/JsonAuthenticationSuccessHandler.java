@@ -45,13 +45,13 @@ public class JsonAuthenticationSuccessHandler implements AuthenticationSuccessHa
             detail = (PlatformUserDetail) authentication.getPrincipal();
             username = detail.getUsername();
             LocalDateTime now = LocalDateTime.now();
-            redisTemplate.opsForValue().set(TOKEN_CREATE_TIME + username, now, TokenAuthenticationHelper.EXPIRATION_TIME, TimeUnit.MILLISECONDS);
-            log.info("{}:{}登录成功", username, now);
             AdminLogin adminLogin = new AdminLogin();
             adminLogin.setAccount(username);
             adminLogin.setLastLoginTime(now);
             adminService.updateAdminLastLoginTime(adminLogin);
             detail.setLastLoginTime(now);
+            redisTemplate.opsForValue().set(TOKEN_CREATE_TIME + username, detail, TokenAuthenticationHelper.EXPIRATION_TIME, TimeUnit.MILLISECONDS);
+            log.info("{}:{}登录成功", username, now);
             data.setData(TokenAuthenticationHelper.generateToken(detail));
             redisTemplate.delete(RedisConstant.LOGIN_FAIL_COUNT + RequestUtil.getIpAddress(request));
         } else {
