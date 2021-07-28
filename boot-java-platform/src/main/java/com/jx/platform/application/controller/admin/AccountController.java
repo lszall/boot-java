@@ -9,6 +9,7 @@ import com.jx.platform.framework.base.BaseController;
 import com.jx.platform.framework.security.PlatformPasswordEncoder;
 import com.jx.platform.service.admin.AdminLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,11 +18,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 
+import static com.jx.platform.common.constant.RedisConstant.TOKEN_CREATE_TIME;
+
 @RestController
 @RequestMapping("account")
 public class AccountController extends BaseController {
     @Autowired
     private AdminLoginService adminLoginService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * 用户重置密码
@@ -40,7 +45,12 @@ public class AccountController extends BaseController {
         adminLogin.setAccount(userDetail().getUsername());
         adminLogin.setPassword(encoder.encode(dto.getNewPassword()));
         adminLogin.setUpdateTime(LocalDateTime.now());
-        return success(adminLoginService.updateByPrimaryKeySelective(adminLogin));
+        int result = adminLoginService.updateByPrimaryKeySelective(adminLogin);
+        if (result > 0) {
+            redisTemplate.delete(TOKEN_CREATE_TIME + adminLogin.getAccount());
+
+        }
+        return success(result);
     }
 
     /**
@@ -60,6 +70,10 @@ public class AccountController extends BaseController {
         adminLogin.setUpdateTime(LocalDateTime.now());
         adminLogin.setPhone(dto.getPhone());
         adminLogin.setAccount(userDetail().getUsername());
-        return success(adminLoginService.updateByPrimaryKeySelective(adminLogin));
+        int result = adminLoginService.updateByPrimaryKeySelective(adminLogin);
+        if (result > 0) {
+            redisTemplate.delete(TOKEN_CREATE_TIME + adminLogin.getAccount());
+        }
+        return success(result);
     }
 }

@@ -9,6 +9,7 @@ import com.jx.platform.framework.base.BaseController;
 import com.jx.platform.framework.security.PlatformPasswordEncoder;
 import com.jx.platform.service.admin.AdminLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
+
+import static com.jx.platform.common.constant.RedisConstant.TOKEN_CREATE_TIME;
 
 /**
  * 超级管理员对账号操作
@@ -26,7 +29,8 @@ public class AdminAccountController extends BaseController {
 
     @Autowired
     private AdminLoginService adminLoginService;
-
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 账号 列表
      *
@@ -52,7 +56,12 @@ public class AdminAccountController extends BaseController {
         AdminLogin adminLogin = new AdminLogin();
         adminLogin.setAccount(dto.getAccount());
         adminLogin.setStatus(dto.getLock());
-        return success(adminLoginService.updateByPrimaryKeySelective(adminLogin));
+        int result = adminLoginService.updateByPrimaryKeySelective(adminLogin);
+        if (result > 0) {
+            redisTemplate.delete(TOKEN_CREATE_TIME + adminLogin.getAccount());
+
+        }
+        return success(result);
     }
 
     /**
@@ -68,7 +77,12 @@ public class AdminAccountController extends BaseController {
         adminLogin.setAccount(dto.getAccount());
         adminLogin.setPassword(encoder.encode("123456"));
         adminLogin.setUpdateTime(LocalDateTime.now());
-        return success(adminLoginService.updateByPrimaryKeySelective(adminLogin));
+        int result = adminLoginService.updateByPrimaryKeySelective(adminLogin);
+        if (result > 0) {
+            redisTemplate.delete(TOKEN_CREATE_TIME + adminLogin.getAccount());
+
+        }
+        return success(result);
     }
 
 
