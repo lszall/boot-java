@@ -2,7 +2,10 @@ package com.jx.platform.framework.security;
 
 import com.jx.platform.framework.config.aop.LogFilter;
 import com.jx.platform.framework.security.jwt.JwtAuthenticationFilter;
-import com.jx.platform.framework.security.login.*;
+import com.jx.platform.framework.security.login.JsonAuthenticationFailureHandler;
+import com.jx.platform.framework.security.login.JsonAuthenticationSuccessHandler;
+import com.jx.platform.framework.security.login.JsonLoginConfigurer;
+import com.jx.platform.framework.security.login.JsonUsernamePasswordAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -25,6 +28,7 @@ public class SercurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 自定义密码加密类
+     *
      * @return
      */
     @Bean
@@ -62,12 +66,14 @@ public class SercurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JsonUsernamePasswordAuthenticationFilter authFilter;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 开启跨域
         http.cors().and().csrf().disable()
                 .formLogin().disable()
                 .authorizeRequests()
+                .antMatchers("/home/logout").permitAll()
                 .antMatchers("/anon/**").permitAll()
                 .antMatchers("/authenticated/b").hasAnyRole("admin")
                 .antMatchers("/authenticated/c").hasAnyRole("dmind")
@@ -78,7 +84,6 @@ public class SercurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new LogFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().disable()
-                .cors()
         ;
     }
 

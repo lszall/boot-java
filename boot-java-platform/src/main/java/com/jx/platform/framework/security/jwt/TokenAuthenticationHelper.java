@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class TokenAuthenticationHelper {
@@ -17,7 +16,8 @@ public class TokenAuthenticationHelper {
     /**
      * 未设置记住我时 token 过期时间
      */
-    private static final long EXPIRATION_TIME = 7200000;
+    public static final long EXPIRATION_TIME = 7200000;
+
     /**
      * 对请求的验证
      */
@@ -36,8 +36,6 @@ public class TokenAuthenticationHelper {
         }
         return null;
     }
-
-
 
 
     /**
@@ -60,14 +58,14 @@ public class TokenAuthenticationHelper {
         return jwt;
     }
 
-    public static String getSign(PlatformUserDetail detail){
+    public static String getSign(PlatformUserDetail detail) {
 
-        return DigestUtils.md5DigestAsHex(DigestUtils.md5DigestAsHex((detail.getUsername() + DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(detail.getLastLoginTime())+ "jx" + detail.getSalt()).getBytes()).getBytes());
+        return DigestUtils.md5DigestAsHex(DigestUtils.md5DigestAsHex((detail.getUsername() + detail.getLastLoginTime() + "jx" + detail.getSalt()).getBytes()).getBytes());
     }
 
 
-    public static boolean checkSign(String sign,PlatformUserDetail detail){
-        if(StringUtils.isEmpty(sign)||detail==null){
+    public static boolean checkSign(String sign, PlatformUserDetail detail) {
+        if (StringUtils.isEmpty(sign) || detail == null) {
             return false;
         }
         String a = getSign(detail);

@@ -19,7 +19,7 @@ public class BaseController {
     public PlatformUserDetail userDetail() {
         PlatformUserDetail userDetails = null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null) {
+        if (authentication != null&&authentication.getPrincipal() instanceof PlatformUserDetail) {
             userDetails = (PlatformUserDetail) authentication.getPrincipal();
         }
         return userDetails;

@@ -20,7 +20,7 @@ public interface AdminLoginMapper {
 
     /**
      *
-     *
+     * unless = "#result == null" 结果是null的时候不缓存
      * @param account:
      * @return com.boot.application.entity.AdminLogin
      * @author lsz

@@ -16,11 +16,6 @@ public class TestController extends BaseController {
     }
 
 
-    @RequestMapping("login")
-    public ResponseData login(){
-        return new ResponseData("任hasRoleA可以访问");
-    }
-
 
     @RequestMapping("hasRoleA")
     public ResponseData hasRoleA(){

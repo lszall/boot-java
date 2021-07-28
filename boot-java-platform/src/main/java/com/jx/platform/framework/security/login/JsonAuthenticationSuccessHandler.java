@@ -22,6 +22,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
+
+import static com.jx.platform.common.constant.RedisConstant.TOKEN_CREATE_TIME;
 
 @Component
 public class JsonAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -42,7 +45,8 @@ public class JsonAuthenticationSuccessHandler implements AuthenticationSuccessHa
             detail = (PlatformUserDetail) authentication.getPrincipal();
             username = detail.getUsername();
             LocalDateTime now = LocalDateTime.now();
-            log.info("{}:{}登录成功", username,now);
+            redisTemplate.opsForValue().set(TOKEN_CREATE_TIME + username, now, TokenAuthenticationHelper.EXPIRATION_TIME, TimeUnit.MILLISECONDS);
+            log.info("{}:{}登录成功", username, now);
             AdminLogin adminLogin = new AdminLogin();
             adminLogin.setAccount(username);
             adminLogin.setLastLoginTime(now);
