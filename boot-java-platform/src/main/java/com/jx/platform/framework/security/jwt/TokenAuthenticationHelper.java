@@ -14,9 +14,9 @@ public class TokenAuthenticationHelper {
     private static final String SECRET_KEY = "boot-jx-token-secret";
 
     /**
-     * 未设置记住我时 token 过期时间
+     * 未设置记住我时 token 过期时间 1 天
      */
-    public static final long EXPIRATION_TIME = 7200000;
+    public static final long EXPIRATION_TIME = 1000 * 60 * 60 * 24 ;
 
     /**
      * 对请求的验证
@@ -42,8 +42,6 @@ public class TokenAuthenticationHelper {
      * 设置登陆成功后令牌返回
      */
     public static String generateToken(PlatformUserDetail detail) {
-        long expirationTime = EXPIRATION_TIME;
-        // 处理登陆附加信息
 
         String jwt = Jwts.builder()
                 // Subject 设置用户名
@@ -51,7 +49,7 @@ public class TokenAuthenticationHelper {
                 // 设置用户权限
                 .claim("sign", getSign(detail))
                 // 过期时间
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 // 签名算法
                 .signWith(SignatureAlgorithm.HS512, SECRET_KEY)
                 .compact();
