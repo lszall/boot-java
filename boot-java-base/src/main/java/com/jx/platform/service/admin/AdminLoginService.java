@@ -63,7 +63,15 @@ public interface AdminLoginService {
      * @date 2021-07-26 15:04:39
      */
     List<AdminMenu> selectMenuByRoleCode(String roleCode);
-
+    /**
+     * 查询菜单信息
+     *
+     * @param menuLevel:   菜单等级
+     * @return com.jx.platform.entity.admin.AdminMenu
+     * @author lsz
+     * @date 2021-07-26 15:04:39
+     */
+    List<AdminMenu> selectMenuByLevel(Integer menuLevel);
     /**
      * 更新角色 并设置角色菜单
      * @return

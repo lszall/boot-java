@@ -65,6 +65,11 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     }
 
     @Override
+    public List<AdminMenu> selectMenuByLevel(Integer menuLevel) {
+        return adminMenuMapper.selectMenuByLevel(menuLevel);
+    }
+
+    @Override
     @Transactional
     public int updateRole(RoleInsertDto dto) {
         adminRoleMapper.deleteRoleMenus(dto);
@@ -97,7 +102,7 @@ public class AdminLoginServiceImpl implements AdminLoginService {
     public int insertMenu(MenuInsertDto dto) {
         AdminMenu menu=adminMenuMapper.selectByPrimaryKey(dto.getMenuCode());
         if(menu!=null){
-            throw new BussinessException("该菜单已存在！");
+            throw new BussinessException("该菜单代码已存在！");
         }
         menu = adminMenuMapper.selectByPrimaryKey(dto.getParentMenu());
         if(menu==null){

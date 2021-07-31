@@ -64,7 +64,7 @@
             <if test="menuDesc != null">
                 menu_desc,
             </if>
-                create_date,
+            create_date,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="menuCode != null">
@@ -91,7 +91,7 @@
             <if test="menuDesc != null">
                 #{menuDesc,jdbcType=VARCHAR},
             </if>
-               now()
+            now()
         </trim>
     </insert>
     <update id="updateByPrimaryKeySelective" parameterType="com.jx.platform.dto.admin.MenuInsertDto">
@@ -135,14 +135,19 @@
       create_date = #{createDate,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+    <select id="selectMenuByLevel" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select m.menu_code, m.menu_name, m.menu_level,m.parent_menu, m.menu_order, m.menu_url, m.show_flag, m.menu_desc
+        from admin_menu m
+        where  m.menu_level = #{menuLevel,jdbcType=INTEGER}
+    </select>
     <select id="selectByRoleCode" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select m.menu_code, m.menu_name, m.menu_level,m.parent_menu, m.menu_order, m.menu_url, m.show_flag, m.menu_desc
-    from admin_role_menu r
-    left join admin_menu m on r.menu_code=m.menu_code
-    <if test="roleCode!=null and roleCode!=''">
-        where r.role_code = #{roleCode,jdbcType=VARCHAR}
-    </if>
-  </select>
+        select m.menu_code, m.menu_name, m.menu_level,m.parent_menu, m.menu_order, m.menu_url, m.show_flag, m.menu_desc
+        from admin_role_menu r
+        left join admin_menu m on r.menu_code=m.menu_code
+        <if test="roleCode!=null and roleCode!=''">
+            where r.role_code = #{roleCode,jdbcType=VARCHAR}
+        </if>
+    </select>
     <select id="listAdminMenu" parameterType="com.jx.platform.dto.admin.MenuListDto" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

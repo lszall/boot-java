@@ -1,25 +1,25 @@
 package com.jx.platform;
 
+import com.jx.platform.framework.security.jwt.TokenAuthenticationHelper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
-//        new BCryptPasswordEncoder().encode("123456");
-//        String password = "123456";
-//        System.out.println(new BCryptPasswordEncoder().encode(password));
-//        for (int i = 0; i <10 ; i++) {
-//            System.out.println(BCrypt.gensalt().length());
-//        }
 
-        DateTimeFormatter dtf2 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        System.out.println(LocalDateTime.now());
-        System.out.println(dtf2.format(LocalDateTime.now()));
 
+        Integer a = 1000 * 60 * 60 * 24 ;
+
+        System.out.println(a);
+       Date date= new Date(System.currentTimeMillis() + a);
+
+        System.out.println(date);
     }
 }

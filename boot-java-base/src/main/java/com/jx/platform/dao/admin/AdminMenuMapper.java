@@ -85,7 +85,15 @@ public interface AdminMenuMapper {
 	 */
 	List<AdminMenu> selectByRoleCode(String roleCode);
 
-
+	/**
+	 * 查询菜单信息
+	 *
+	 * @param menuLevel:   菜单等级
+	 * @return com.jx.platform.entity.admin.AdminMenu
+	 * @author lsz
+	 * @date 2021-07-26 15:04:39
+	 */
+	List<AdminMenu> selectMenuByLevel(Integer menuLevel);
 	/**
 	 * @param dto:
 	 * @return com.jx.platform.entity.admin.AdminMenu

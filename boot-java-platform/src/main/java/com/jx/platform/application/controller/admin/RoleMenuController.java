@@ -2,10 +2,7 @@ package com.jx.platform.application.controller.admin;
 
 import com.jx.platform.common.constant.BusinessConstant;
 import com.jx.platform.common.response.ResponseData;
-import com.jx.platform.dto.admin.MenuInsertDto;
-import com.jx.platform.dto.admin.MenuListDto;
-import com.jx.platform.dto.admin.RoleInsertDto;
-import com.jx.platform.dto.admin.RoleListDto;
+import com.jx.platform.dto.admin.*;
 import com.jx.platform.entity.admin.AdminMenu;
 import com.jx.platform.entity.admin.AdminMenuTree;
 import com.jx.platform.framework.base.BaseController;
@@ -106,7 +103,17 @@ public class RoleMenuController extends BaseController {
         });
 
     }
-
+    /**
+     * 菜单列表
+     *
+     * @param dto
+     * @return
+     */
+    @PostMapping("menuListByLevel")
+    public ResponseData menuListByLevel(@RequestBody @Validated MenuListLevelDto dto) {
+        List<AdminMenu> list = adminLoginService.selectMenuByLevel(dto.getMenuLevel());
+        return success(list);
+    }
     /**
      * 菜单列表
      *
