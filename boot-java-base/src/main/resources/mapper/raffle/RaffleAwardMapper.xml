@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jx.platform.dao.raffle.RaffleAwardMapper">
+  <resultMap id="BaseResultMap" type="com.jx.platform.entity.raffle.RaffleAward">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="lot_no" jdbcType="VARCHAR" property="lotNo" />
+    <result column="prizes_name" jdbcType="VARCHAR" property="prizesName" />
+    <result column="prizes_num" jdbcType="INTEGER" property="prizesNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, lot_no, prizes_name, prizes_num
+  </sql>
+
+  <select id="selectByLotNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from raffle_award
+    where lot_no = #{lotNo,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from raffle_award
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from raffle_award
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByLotNo" parameterType="java.lang.String">
+    delete from raffle_award
+    where  lot_no = #{lotNo,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.jx.platform.entity.raffle.RaffleAward">
+    insert into raffle_award (id, lot_no, prizes_name, 
+      prizes_num)
+    values (#{id,jdbcType=INTEGER}, #{lotNo,jdbcType=VARCHAR}, #{prizesName,jdbcType=VARCHAR}, 
+      #{prizesNum,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jx.platform.entity.raffle.RaffleAward" useGeneratedKeys="true" keyProperty="id">
+    insert into raffle_award
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="lotNo != null">
+        lot_no,
+      </if>
+      <if test="prizesName != null">
+        prizes_name,
+      </if>
+      <if test="prizesNum != null">
+        prizes_num,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="lotNo != null">
+        #{lotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="prizesName != null">
+        #{prizesName,jdbcType=VARCHAR},
+      </if>
+      <if test="prizesNum != null">
+        #{prizesNum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jx.platform.entity.raffle.RaffleAward">
+    update raffle_award
+    <set>
+      <if test="lotNo != null">
+        lot_no = #{lotNo,jdbcType=VARCHAR},
+      </if>
+      <if test="prizesName != null">
+        prizes_name = #{prizesName,jdbcType=VARCHAR},
+      </if>
+      <if test="prizesNum != null">
+        prizes_num = #{prizesNum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jx.platform.entity.raffle.RaffleAward">
+    update raffle_award
+    set lot_no = #{lotNo,jdbcType=VARCHAR},
+      prizes_name = #{prizesName,jdbcType=VARCHAR},
+      prizes_num = #{prizesNum,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

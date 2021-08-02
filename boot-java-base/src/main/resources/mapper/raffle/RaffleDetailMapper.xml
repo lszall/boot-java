@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jx.platform.dao.raffle.RaffleDetailMapper">
+    <resultMap id="BaseResultMap" type="com.jx.platform.entity.raffle.RaffleDetail">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="lot_no" jdbcType="VARCHAR" property="lotNo"/>
+        <result column="prizes_id" jdbcType="INTEGER" property="prizesId"/>
+        <result column="sort_num" jdbcType="INTEGER" property="sortNum"/>
+        <result column="pick" jdbcType="CHAR" property="pick"/>
+        <result column="prizes_name" jdbcType="VARCHAR" property="prizesName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, lot_no, prizes_id, sort_num, pick
+    </sql>
+    <select id="selectByLotNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select  d.id,  d.lot_no,  d.prizes_id,  d.sort_num,  d.pick, a.prizes_name
+        from raffle_detail d
+        left join raffle_award a on a.lot_no=d.lot_no and d.prizes_id=a.id
+        where d.lot_no = #{lotNo,jdbcType=VARCHAR}
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from raffle_detail
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from raffle_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByLotNo" parameterType="java.lang.String">
+    delete from raffle_detail
+     where  lot_no = #{lotNo,jdbcType=VARCHAR}
+  </delete>
+
+    <insert id="insert" parameterType="com.jx.platform.entity.raffle.RaffleDetail">
+    insert into raffle_detail (id, lot_no, prizes_id, 
+      sort_num, pick)
+    values (#{id,jdbcType=INTEGER}, #{lotNo,jdbcType=VARCHAR}, #{prizesId,jdbcType=INTEGER}, 
+      #{sortNum,jdbcType=INTEGER}, #{pick,jdbcType=CHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.jx.platform.entity.raffle.RaffleDetail">
+        insert into raffle_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="lotNo != null">
+                lot_no,
+            </if>
+            <if test="prizesId != null">
+                prizes_id,
+            </if>
+            <if test="sortNum != null">
+                sort_num,
+            </if>
+            <if test="pick != null">
+                pick,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="lotNo != null">
+                #{lotNo,jdbcType=VARCHAR},
+            </if>
+            <if test="prizesId != null">
+                #{prizesId,jdbcType=INTEGER},
+            </if>
+            <if test="sortNum != null">
+                #{sortNum,jdbcType=INTEGER},
+            </if>
+            <if test="pick != null">
+                #{pick,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jx.platform.entity.raffle.RaffleDetail">
+        update raffle_detail
+        <set>
+            <if test="prizesId != null">
+                prizes_id = #{prizesId,jdbcType=INTEGER},
+            </if>
+            <if test="sortNum != null">
+                sort_num = #{sortNum,jdbcType=INTEGER},
+            </if>
+            <if test="pick != null">
+                pick = #{pick,jdbcType=CHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jx.platform.entity.raffle.RaffleDetail">
+    update raffle_detail
+    set lot_no = #{lotNo,jdbcType=VARCHAR},
+      prizes_id = #{prizesId,jdbcType=INTEGER},
+      sort_num = #{sortNum,jdbcType=INTEGER},
+      pick = #{pick,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+    <update id="resetPick">
+         update raffle_detail set  pick = 'N' where lot_no = #{lotNo,jdbcType=VARCHAR}
+    </update>
+
+    <select id="countNoPickNum" parameterType="java.lang.String" resultType="int">
+        select count(0) from raffle_detail where lot_no = #{lotNo,jdbcType=VARCHAR} and pick='N'
+    </select>
+</mapper>

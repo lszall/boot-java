@@ -3,6 +3,7 @@ package com.jx.platform.service.sys;
 import com.jx.platform.entity.sys.SysActionLog;
 import com.jx.platform.entity.sys.SysDict;
 import com.jx.platform.entity.sys.SysDictType;
+import com.jx.platform.entity.sys.SysUpload;
 
 import java.util.List;
 
@@ -29,4 +30,11 @@ public interface SysService {
      * @return
      */
     List<SysDict> getDictList(String typeCode);
+
+    /**
+     * 保存上传文件
+     * @param upload
+     * @return
+     */
+    int insertSysUpload(SysUpload upload);
 }

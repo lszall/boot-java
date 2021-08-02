@@ -152,13 +152,14 @@
         select
         <include refid="Base_Column_List"/>
         from admin_menu
-        where 1=1
+        <where>
         <if test="menuCode!=null and menuCode!=''">
             and menu_code = #{menuCode,jdbcType=VARCHAR}
         </if>
         <if test="menuName!=null and menuName!=''">
             and menu_name like concat('%',#{menuName,jdbcType=VARCHAR},'%')
         </if>
+        </where>
     </select>
 
 

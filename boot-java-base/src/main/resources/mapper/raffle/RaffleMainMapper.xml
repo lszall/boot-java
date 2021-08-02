@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jx.platform.dao.raffle.RaffleMainMapper">
+    <resultMap id="BaseResultMap" type="com.jx.platform.entity.raffle.RaffleMain">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="lot_no" jdbcType="VARCHAR" property="lotNo"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="raffle_type" jdbcType="CHAR" property="raffleType"/>
+        <result column="total_num" jdbcType="INTEGER" property="totalNum"/>
+        <result column="cover_url" jdbcType="VARCHAR" property="coverUrl"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="no_prizes_msg" jdbcType="VARCHAR" property="noPrizesMsg"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, lot_no, `name`, raffle_type, total_num, cover_url, status, no_prizes_msg, create_date
+  </sql>
+
+    <select id="selectRaffleMainList" parameterType="com.jx.platform.dto.raffle.RaffleListDto"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from raffle_main
+        <where>
+            <if test="name!=null and name!=''">
+                and `name` like concat('%',#{name,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="name!=null and name!=''">
+                and `lot_no` like concat('%',#{lotNo,jdbcType=VARCHAR},'%')
+            </if>
+        </where>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from raffle_main
+        where lot_no = #{lotNo,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from raffle_main
+    where lot_no = #{lotNo,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.jx.platform.entity.raffle.RaffleMain">
+    insert into raffle_main (id, lot_no, `name`,
+      raffle_type, total_num, cover_url, 
+      status, no_prizes_msg, create_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{lotNo,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{raffleType,jdbcType=CHAR}, #{totalNum,jdbcType=INTEGER}, #{coverUrl,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{noPrizesMsg,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.jx.platform.entity.raffle.RaffleMain">
+        insert into raffle_main
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="lotNo != null">
+                lot_no,
+            </if>
+            <if test="name != null">
+                `name`,
+            </if>
+            <if test="raffleType != null">
+                raffle_type,
+            </if>
+            <if test="totalNum != null">
+                total_num,
+            </if>
+            <if test="coverUrl != null">
+                cover_url,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="noPrizesMsg != null">
+                no_prizes_msg,
+            </if>
+            create_date
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="lotNo != null">
+                #{lotNo,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="raffleType != null">
+                #{raffleType,jdbcType=CHAR},
+            </if>
+            <if test="totalNum != null">
+                #{totalNum,jdbcType=INTEGER},
+            </if>
+            <if test="coverUrl != null">
+                #{coverUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="noPrizesMsg != null">
+                #{noPrizesMsg,jdbcType=VARCHAR},
+            </if>
+            now()
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.jx.platform.entity.raffle.RaffleMain">
+        update raffle_main
+        <set>
+            <if test="name != null">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="raffleType != null">
+                raffle_type = #{raffleType,jdbcType=CHAR},
+            </if>
+            <if test="totalNum != null">
+                total_num = #{totalNum,jdbcType=INTEGER},
+            </if>
+            <if test="coverUrl != null">
+                cover_url = #{coverUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="noPrizesMsg != null">
+                no_prizes_msg = #{noPrizesMsg,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where lot_no = #{lotNo,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.jx.platform.entity.raffle.RaffleMain">
+    update raffle_main
+    set
+      `name` = #{name,jdbcType=VARCHAR},
+      raffle_type = #{raffleType,jdbcType=CHAR},
+      total_num = #{totalNum,jdbcType=INTEGER},
+      cover_url = #{coverUrl,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      no_prizes_msg = #{noPrizesMsg,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP}
+    where lot_no = #{lotNo,jdbcType=VARCHAR}
+  </update>
+</mapper>

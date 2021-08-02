@@ -1,6 +1,10 @@
 server:
   port: 80
 spring:
+  servlet:
+    multipart:
+      max-request-size: 10MB # 上传文件总的最大值
+      max-file-size: 10MB # 单个文件的最大值
   profiles:
     active: dev
   redis:
@@ -40,4 +44,6 @@ mybatis:
 hibernate:
   validator:
     fail_fast: false # true-快速失败返回模式    false-普通模式
-
+local-config:
+  upload-path-root: E:\LocalData\web\
+  pic-host: 127.0.0.1:9090

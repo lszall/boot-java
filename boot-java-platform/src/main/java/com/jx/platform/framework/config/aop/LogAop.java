@@ -18,6 +18,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -76,32 +77,34 @@ public class LogAop {
         actionLog.setActionUrl(url);
         actionLog.setCostTime(end - start);
         actionLog.setCreateDate(LocalDateTime.now());
-        actionLog.setParam(param);
+        if (!url.startsWith("/upload")) {
+            actionLog.setParam(param);
+        }
         actionLog.setReqIp(ip);
         actionLog.setApplicationName(applicationName);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
-            if(principal instanceof PlatformUserDetail){
+            if (principal instanceof PlatformUserDetail) {
                 PlatformUserDetail userDetails = (PlatformUserDetail) authentication.getPrincipal();
                 actionLog.setUsername(userDetails.getUsername());
-            }else{
+            } else {
                 actionLog.setUsername("unkown");
             }
 
         } else {
             actionLog.setUsername("unkown");
         }
-        if(exception==null){
+        if (exception == null) {
             actionLog.setSuccess("Y");
             actionLog.setResponse(JSONObject.toJSONString(result));
-        }else{
+        } else {
             actionLog.setSuccess("N");
-            actionLog.setResponse(exception.getClass()+":"+exception.getMessage());
+            actionLog.setResponse(exception.getClass() + ":" + exception.getMessage());
         }
 
         sysService.insertSysActionLog(actionLog);
-        if(exception!=null){
+        if (exception != null) {
             throw exception;
         }
         return result;
