@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -30,7 +31,7 @@ public class PlatfromUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException(username);
         }
         PlatformUserDetail userDetail = new PlatformUserDetail();
-        userDetail.setSalt("jxxx");
+        userDetail.setSalt(BCrypt.gensalt());
         userDetail.setUsername(adminLogin.getAccount());
         userDetail.setPassword(adminLogin.getPassword());
         userDetail.setRoleCode(adminLogin.getRoleCode());

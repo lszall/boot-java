@@ -66,7 +66,6 @@ public class TokenAuthenticationHelper {
         if (StringUtils.isEmpty(sign) || detail == null) {
             return false;
         }
-        String a = getSign(detail);
         return sign.equals(getSign(detail));
     }
 

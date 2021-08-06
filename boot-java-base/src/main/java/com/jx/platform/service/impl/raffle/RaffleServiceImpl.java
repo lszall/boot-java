@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class RaffleServiceImpl implements RaffleService {
@@ -165,11 +166,13 @@ public class RaffleServiceImpl implements RaffleService {
     public List<RaffleDetail> listRaffleDetail(RaffleStatusDto dto) {
         RaffleMain main = validLotNo(dto.getLotNo());
         List<RaffleDetail> list = raffleDetailMapper.selectByLotNo(dto);
-        list.stream().forEach(item -> {
-            if (StringUtils.isEmpty(item.getPrizesName())) {
-                item.setPrizesName(main.getNoPrizesMsg());
-            }
-        });
+        if (!Objects.equals(1, dto.getStatus())) {
+            list.stream().forEach(item -> {
+                if (StringUtils.isEmpty(item.getPrizesName())) {
+                    item.setPrizesName(main.getNoPrizesMsg());
+                }
+            });
+        }
         return list;
     }
 
