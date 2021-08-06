@@ -8,6 +8,7 @@
 */
 package com.jx.platform.dao.raffle;
 
+import com.jx.platform.dto.raffle.RaffleStatusDto;
 import com.jx.platform.entity.raffle.RaffleDetail;
 
 import java.util.List;
@@ -53,7 +54,7 @@ public interface RaffleDetailMapper {
 	*/
     RaffleDetail selectByPrimaryKey(Integer id);
 
-	List<RaffleDetail> selectByLotNo(String lotNo);
+	List<RaffleDetail> selectByLotNo(RaffleStatusDto dto);
     /**
 	* 
 	* 

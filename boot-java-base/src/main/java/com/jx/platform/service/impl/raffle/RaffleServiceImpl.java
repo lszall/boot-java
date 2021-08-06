@@ -6,10 +6,7 @@ import com.jx.platform.common.exception.BussinessException;
 import com.jx.platform.dao.raffle.RaffleAwardMapper;
 import com.jx.platform.dao.raffle.RaffleDetailMapper;
 import com.jx.platform.dao.raffle.RaffleMainMapper;
-import com.jx.platform.dto.raffle.RaffleListDto;
-import com.jx.platform.dto.raffle.RaffleMainInsertDto;
-import com.jx.platform.dto.raffle.RaffleResultUploadDto;
-import com.jx.platform.dto.raffle.RaffleStatusDto;
+import com.jx.platform.dto.raffle.*;
 import com.jx.platform.entity.raffle.RaffleAward;
 import com.jx.platform.entity.raffle.RaffleDetail;
 import com.jx.platform.entity.raffle.RaffleMain;
@@ -38,15 +35,22 @@ public class RaffleServiceImpl implements RaffleService {
     @Override
     @Transactional
     public int insertRaffle(RaffleMainInsertDto dto) {
-        validLotNo(dto.getLotNo());
+        RaffleMain main = raffleMainMapper.selectByPrimaryKey(dto.getLotNo());
+        if (main != null) {
+            throw new BussinessException("批次号已存在！");
+        }
         createRaffleDetail(dto);
-        RaffleMain main = new RaffleMain();
+        main = new RaffleMain();
         BeanUtils.copyProperties(dto, main);
         main.setStatus(0);
         return raffleMainMapper.insertSelective(main);
     }
 
     private void createRaffleDetail(RaffleMainInsertDto dto) {
+        int prizeNum = dto.getAwards().stream().mapToInt(RaffleAwardInsertDto::getPrizesNum).sum();
+        if (prizeNum > dto.getTotalNum()) {
+            throw new BussinessException("奖品总数量不能大于牌子总数");
+        }
         List<RaffleDetail> details = new ArrayList<>();
         dto.getAwards().stream().forEach(item -> {
             RaffleAward award = new RaffleAward();
@@ -119,8 +123,9 @@ public class RaffleServiceImpl implements RaffleService {
         validLotNo(dto.getLotNo());
         RaffleMain main = new RaffleMain();
         BeanUtils.copyProperties(dto, main);
-        main.setStatus(1);
-        raffleDetailMapper.resetPick(dto.getLotNo());
+        if (dto.getStatus() == 0) {
+            raffleDetailMapper.resetPick(dto.getLotNo());
+        }
         return this.raffleMainMapper.updateByPrimaryKeySelective(main);
     }
 
@@ -157,9 +162,9 @@ public class RaffleServiceImpl implements RaffleService {
     }
 
     @Override
-    public List<RaffleDetail> listRaffleDetail(String lotNo) {
-        RaffleMain main = validLotNo(lotNo);
-        List<RaffleDetail> list = raffleDetailMapper.selectByLotNo(lotNo);
+    public List<RaffleDetail> listRaffleDetail(RaffleStatusDto dto) {
+        RaffleMain main = validLotNo(dto.getLotNo());
+        List<RaffleDetail> list = raffleDetailMapper.selectByLotNo(dto);
         list.stream().forEach(item -> {
             if (StringUtils.isEmpty(item.getPrizesName())) {
                 item.setPrizesName(main.getNoPrizesMsg());

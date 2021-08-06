@@ -5,14 +5,12 @@ import com.jx.platform.dto.raffle.RaffleListDto;
 import com.jx.platform.dto.raffle.RaffleMainInsertDto;
 import com.jx.platform.dto.raffle.RaffleResultUploadDto;
 import com.jx.platform.dto.raffle.RaffleStatusDto;
-import com.jx.platform.entity.raffle.RaffleDetail;
 import com.jx.platform.framework.base.BaseController;
 import com.jx.platform.service.raffle.RaffleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * 翻牌抽奖
@@ -25,10 +23,12 @@ public class RaffleController extends BaseController {
     private RaffleService raffleService;
 
 
+
     @PostMapping("insertRaffle")
     public ResponseData insertRaffle(@RequestBody @Validated RaffleMainInsertDto dto) {
         return success(raffleService.insertRaffle(dto));
     }
+
 
     @PostMapping("updateRaffle")
     public ResponseData updateRaffle(@RequestBody @Validated RaffleMainInsertDto dto) {
@@ -50,9 +50,14 @@ public class RaffleController extends BaseController {
         return success(raffleService.deleteRaffle(lotNo));
     }
 
-    @PostMapping("listRaffleDetail/{lotNo}")
-    public ResponseData listRaffleDetail(@PathVariable("lotNo") String lotNo) {
-        return success(raffleService.listRaffleDetail(lotNo));
+    /**
+     * 获取抽奖排列明细
+     * @param dto status=1 仅有奖品明细 status=0 包含空奖
+     * @return
+     */
+    @PostMapping("listRaffleDetail")
+    public ResponseData listRaffleDetail(@RequestBody @Validated RaffleStatusDto dto) {
+        return success(raffleService.listRaffleDetail(dto));
     }
 
 
@@ -60,7 +65,7 @@ public class RaffleController extends BaseController {
      * 修改抽奖配置状态
      *
      * @param dto
-      * @return
+     * @return
      */
     @PostMapping("reStartRaffle")
     public ResponseData reStartRaffle(@RequestBody @Validated RaffleStatusDto dto) {
@@ -75,7 +80,6 @@ public class RaffleController extends BaseController {
      */
     @PostMapping("raffleResultUpload")
     public ResponseData raffleResultUpload(@RequestBody @Validated RaffleResultUploadDto dto) {
-
         return success(raffleService.raffleResultUpload(dto));
     }
 

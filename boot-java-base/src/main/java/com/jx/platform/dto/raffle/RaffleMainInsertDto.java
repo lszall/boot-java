@@ -3,7 +3,9 @@ package com.jx.platform.dto.raffle;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -27,5 +29,7 @@ public class RaffleMainInsertDto {
     @NotBlank
     private String noPrizesMsg;
 
+    @NotEmpty
+    @Valid
     private List<RaffleAwardInsertDto> awards;
 }

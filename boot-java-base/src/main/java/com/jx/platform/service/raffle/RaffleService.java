@@ -76,8 +76,8 @@ public interface RaffleService {
     /**
      * 明细列表
      *
-     * @param lotNo        批次
+     * @param dto        批次
      * @return
      */
-    List<RaffleDetail> listRaffleDetail(String lotNo);
+    List<RaffleDetail> listRaffleDetail(RaffleStatusDto dto);
 }
