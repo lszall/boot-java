@@ -6,10 +6,10 @@ import com.jx.platform.dto.admin.AccountLockDto;
 import com.jx.platform.dto.admin.AccountRestPwdDto;
 import com.jx.platform.entity.admin.AdminLogin;
 import com.jx.platform.framework.base.BaseController;
-import com.jx.platform.framework.security.PlatformPasswordEncoder;
 import com.jx.platform.service.admin.AdminLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +31,8 @@ public class AdminAccountController extends BaseController {
     private AdminLoginService adminLoginService;
     @Autowired
     private RedisTemplate redisTemplate;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     /**
      * 账号 列表
      *
@@ -64,6 +66,7 @@ public class AdminAccountController extends BaseController {
         return success(result);
     }
 
+
     /**
      * 重置密码
      *
@@ -72,10 +75,9 @@ public class AdminAccountController extends BaseController {
      */
     @PostMapping("resetPwd")
     public ResponseData resetPwd(@RequestBody @Validated AccountRestPwdDto dto) {
-        PlatformPasswordEncoder encoder = new PlatformPasswordEncoder();
         AdminLogin adminLogin = new AdminLogin();
         adminLogin.setAccount(dto.getAccount());
-        adminLogin.setPassword(encoder.encode("123456"));
+        adminLogin.setPassword(passwordEncoder.encode("123456"));
         adminLogin.setUpdateTime(LocalDateTime.now());
         int result = adminLoginService.updateByPrimaryKeySelective(adminLogin);
         if (result > 0) {

@@ -6,10 +6,10 @@ import com.jx.platform.dto.admin.AccountChangePhoneDto;
 import com.jx.platform.dto.admin.AccountRestPasswordDto;
 import com.jx.platform.entity.admin.AdminLogin;
 import com.jx.platform.framework.base.BaseController;
-import com.jx.platform.framework.security.PlatformPasswordEncoder;
 import com.jx.platform.service.admin.AdminLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,7 +27,8 @@ public class AccountController extends BaseController {
     private AdminLoginService adminLoginService;
     @Autowired
     private RedisTemplate redisTemplate;
-
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
     /**
      * 用户重置密码
      *
@@ -36,14 +37,13 @@ public class AccountController extends BaseController {
      */
     @PostMapping("resetPwd")
     public ResponseData resetPwd(@RequestBody @Validated AccountRestPasswordDto dto) {
-        PlatformPasswordEncoder encoder = new PlatformPasswordEncoder();
         AdminLogin adminLogin = adminLoginService.selectAdminLoginByAccount(userDetail().getUsername());
-        if (!encoder.matches(adminLogin.getPassword(), dto.getOldPassword())) {
+        if (!passwordEncoder.matches(adminLogin.getPassword(), dto.getOldPassword())) {
             throw new BussinessException("原密码错误！");
         }
         adminLogin = new AdminLogin();
         adminLogin.setAccount(userDetail().getUsername());
-        adminLogin.setPassword(encoder.encode(dto.getNewPassword()));
+        adminLogin.setPassword(passwordEncoder.encode(dto.getNewPassword()));
         adminLogin.setUpdateTime(LocalDateTime.now());
         int result = adminLoginService.updateByPrimaryKeySelective(adminLogin);
         if (result > 0) {
@@ -61,9 +61,8 @@ public class AccountController extends BaseController {
      */
     @PostMapping("changePhone")
     public ResponseData changePhone(@RequestBody @Validated AccountChangePhoneDto dto) {
-        PlatformPasswordEncoder encoder = new PlatformPasswordEncoder();
         AdminLogin adminLogin = adminLoginService.selectAdminLoginByAccount(userDetail().getUsername());
-        if (!encoder.matches(adminLogin.getPassword(), dto.getPassword())) {
+        if (!passwordEncoder.matches(adminLogin.getPassword(), dto.getPassword())) {
             throw new BussinessException("密码错误！");
         }
         adminLogin = new AdminLogin();
