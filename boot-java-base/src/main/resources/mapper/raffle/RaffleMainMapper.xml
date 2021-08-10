@@ -29,6 +29,7 @@
                 and `lot_no` like concat('%',#{lotNo,jdbcType=VARCHAR},'%')
             </if>
         </where>
+        order by create_date desc
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select

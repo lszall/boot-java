@@ -7,6 +7,8 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @ClassName NotFoundExceptionHandler
  * @Description: 捕获SpringSecurity过滤连中的异常 401、403异常
@@ -27,7 +29,9 @@ public class NotFoundExceptionHandler implements ErrorController {
     }
 
     @RequestMapping(ERROR_PATH)
-    public ResponseData error404() {
-        return new ResponseData(ResponseType.AUTH_ERROR);
+    public ResponseData error404(HttpServletResponse response) {
+        ResponseData responseData=  new ResponseData(ResponseType.AUTH_ERROR);
+        response.setStatus(HttpServletResponse.SC_OK);
+        return responseData;
     }
 }

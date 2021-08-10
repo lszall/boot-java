@@ -2,10 +2,19 @@ package com.jx.platform;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Test {
     public static void main(String[] args) {
+
+        BigDecimal a = BigDecimal.ZERO;
+        BigDecimal b = new BigDecimal(10);
+
+        a.add(b);
+        System.out.println(a);
+        System.out.println(a.add(b));
 
 
     }

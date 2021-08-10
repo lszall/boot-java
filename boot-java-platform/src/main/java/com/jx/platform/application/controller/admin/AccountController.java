@@ -20,6 +20,9 @@ import java.time.LocalDateTime;
 
 import static com.jx.platform.common.constant.RedisConstant.TOKEN_CREATE_TIME;
 
+/**
+ * 用户操作自己账号  密码修改，手机号修改
+ */
 @RestController
 @RequestMapping("account")
 public class AccountController extends BaseController {
@@ -54,7 +57,7 @@ public class AccountController extends BaseController {
     }
 
     /**
-     * 用户重置密码
+     * 用户修改手机号
      *
      * @param dto
      * @return

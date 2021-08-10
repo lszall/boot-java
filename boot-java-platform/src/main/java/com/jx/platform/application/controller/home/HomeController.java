@@ -17,6 +17,9 @@ import java.util.List;
 
 import static com.jx.platform.common.constant.RedisConstant.TOKEN_CREATE_TIME;
 
+/**
+ * 首页操作
+ */
 @RestController
 @RequestMapping("home")
 public class HomeController extends BaseController {

@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * 上传操作
+ */
 @RestController
 @RequestMapping("upload")
 public class UploadController extends BaseController {
