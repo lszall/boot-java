@@ -6,4 +6,7 @@ public interface TestService {
     void ss();
     void aa(int x);
     void aas(int x);
+
+
+    String task();
 }

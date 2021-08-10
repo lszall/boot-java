@@ -1,6 +1,7 @@
 package com.jx.platform.application.service.impl;
 
 import com.jx.platform.application.service.TestService;
+import com.jx.platform.framework.config.lock.annotation.TaskLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
@@ -36,5 +37,18 @@ public class TestServiceImpl implements TestService {
         }
 
         log.info("---"+x);
+    }
+
+    @Override
+    @TaskLock(lockKey = "TAKS-TEST",expire = 2000L)
+    public String task() {
+        log.info("--执行--");
+        try {
+            Thread.sleep(100);
+            return "success";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "failure";
     }
 }

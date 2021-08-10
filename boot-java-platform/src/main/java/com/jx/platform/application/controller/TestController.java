@@ -35,6 +35,10 @@ public class TestController extends BaseController {
         return new ResponseData("任何人可以访问");
     }
 
+    @RequestMapping("anon/aasds")
+    public ResponseData aasds() {
+        return new ResponseData( testService.task());
+    }
     @RequestMapping("anon/aa")
     public ResponseData Anon() {
 
