@@ -11,6 +11,8 @@
     <modules>
         <module>boot-java-base</module>
         <module>boot-java-platform</module>
+        <module>boot-java-test</module>
+        <module>bootjavboot-java-drools</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

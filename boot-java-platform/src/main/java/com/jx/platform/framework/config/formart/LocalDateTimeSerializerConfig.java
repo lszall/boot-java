@@ -1,4 +1,4 @@
-package com.jx.platform.framework.config.time;
+package com.jx.platform.framework.config.formart;
 
 
 import org.springframework.context.annotation.Configuration;

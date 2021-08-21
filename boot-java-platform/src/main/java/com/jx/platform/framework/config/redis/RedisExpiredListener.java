@@ -1,7 +1,9 @@
 package com.jx.platform.framework.config.redis;
 
+import com.jx.platform.framework.config.lock.TaskRedisLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.listener.KeyExpirationEventMessageListener;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -15,6 +17,10 @@ import org.springframework.stereotype.Component;
 public class RedisExpiredListener extends KeyExpirationEventMessageListener {
     private static final Logger log = LoggerFactory.getLogger(RedisExpiredListener.class);
 
+
+    @Autowired
+    private TaskRedisLock taskRedisLock;
+
     /**
      * Creates new {@link MessageListener} for {@code __keyevent@*__:expired} messages.
      *
@@ -25,12 +31,17 @@ public class RedisExpiredListener extends KeyExpirationEventMessageListener {
     }
 
 
-
+    /**
+     * 多个服务监听 只需一个处理即可
+     * @param message
+     * @param pattern
+     */
     @Override
     public void onMessage(Message message, byte[] pattern) {
         // 用户做自己的业务处理即可,注意message.toString()可以获取失效的key
         String expiredKey = message.toString();
         log.info("redis-key-expireKey:" + expiredKey);
         log.info("redis-key-pattern:" + new String(pattern));
+        taskRedisLock.keyExpireHandle(expiredKey);
     }
 }

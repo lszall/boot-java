@@ -15,6 +15,15 @@ public class TaskRedisLock {
 
     private static final Logger log = LoggerFactory.getLogger(TaskRedisLock.class);
 
+    /**
+     * redis key 失效监听处理 锁
+     */
+    private static final String KEY_EXPIRE_HANDLE_KEY = "KEY_EXPIRE_HANDLE::";
+    /**
+     * redis key 失效监听处理 锁 失效时间60秒
+     */
+    private static final long KEY_EXPIRE_HANDLE_EXPIRE = 60000L;
+
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -31,6 +40,14 @@ public class TaskRedisLock {
         }
     }
 
+    /**
+     * 处理 @TaskLock 任务
+     * @param lockKey
+     * @param expire
+     * @param callback
+     * @return
+     * @throws Throwable
+     */
     public Object doTaskInLock(String lockKey, long expire, CallBack callback) throws Throwable {
         Object result = null;
         String lock = null;
@@ -48,6 +65,32 @@ public class TaskRedisLock {
             }
         }
         return result;
+    }
+
+
+    /**
+     * redis key 失效处理
+     * @param expiredKey
+     */
+    public void keyExpireHandle(String expiredKey){
+        log.info("handle expire key :" + expiredKey);
+        String lock = null;
+        String lockKey = KEY_EXPIRE_HANDLE_KEY + expiredKey;
+        try {
+            lock = getLock(lockKey, KEY_EXPIRE_HANDLE_EXPIRE);
+            if (lock != null) {
+                log.info("TODO 实际处理方法 做一个分发 :" + expiredKey);
+            }
+        } catch (Throwable e) {
+            log.error("-----处理失败---");
+            throw e;
+        } finally {
+            if (StringUtils.isNotBlank(lock)) {
+                unLock(lockKey, lock);
+            }
+        }
+
+
     }
 
 }

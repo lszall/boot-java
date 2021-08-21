@@ -3,6 +3,7 @@ package com.jx.platform;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.jws.Oneway;
+import java.net.InetAddress;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -10,19 +11,12 @@ import java.util.concurrent.TimeUnit;
 
 public class TestPWD {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
+        InetAddress addr = InetAddress.getLocalHost();
+        System.out.println("Local HostAddress: "+addr.getHostAddress());
+                String hostname = addr.getHostName();
+        System.out.println("Local host name: " + hostname);
 
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 100, 1, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
-        for (int i = 0; i < 100; i++) {
-            final int ss = i;
-            executor.execute(() -> {
-                System.out.println("--" + ss);
-            });
-        }
-        System.out.println("----mian");
-
-        executor.shutdown();
-        ArrayBlockingQueue queue = new ArrayBlockingQueue<>(12);
     }
 
 }
